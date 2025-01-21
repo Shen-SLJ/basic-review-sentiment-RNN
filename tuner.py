@@ -1,6 +1,7 @@
 import keras_tuner as kt
 from keras.src.callbacks import EarlyStopping
 from keras.src.datasets import imdb
+from keras.src.utils import pad_sequences
 from keras_tuner import Tuner
 
 from ImdbSentimentHypermodel import ImdbSentimentHyperModel
@@ -17,6 +18,8 @@ def __print_best_hyperparameter(tuner: Tuner, hp_name: str) -> None:
 
 if __name__ == '__main__':
     (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=ImdbSentimentHyperModel.VOCAB_SIZE)
+    x_train = pad_sequences(sequences=x_train, maxlen=ImdbSentimentHyperModel.MAX_LEN)
+    x_test = pad_sequences(sequences=x_test, maxlen=ImdbSentimentHyperModel.MAX_LEN)
 
     hypermodel = ImdbSentimentHyperModel()
     tuner = kt.GridSearch(
