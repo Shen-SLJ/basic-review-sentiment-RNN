@@ -1,0 +1,41 @@
+import keras_tuner as kt
+from keras.src.callbacks import EarlyStopping
+from keras.src.datasets import imdb
+from keras_tuner import Tuner
+
+from ImdbSentimentHypermodel import ImdbSentimentHyperModel
+
+MAX_EPOCHS = 30
+BATCH_SIZE = 32
+
+
+def __print_best_hyperparameter(tuner: Tuner, hp_name: str) -> None:
+    best_hyperparam = tuner.get_best_hyperparameters()[0].get(hp_name)
+
+    print(f"Best value for hp {hp_name} = {best_hyperparam}")
+
+
+if __name__ == '__main__':
+    (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=ImdbSentimentHyperModel.VOCAB_SIZE)
+
+    hypermodel = ImdbSentimentHyperModel()
+    tuner = kt.GridSearch(
+        hypermodel=hypermodel,
+        objective=kt.Objective(name='val_loss', direction='min'),
+        project_name='data'
+    )
+
+    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+
+    tuner.search(
+        x=x_train,
+        y=y_train,
+        epochs=MAX_EPOCHS,
+        batch_size=BATCH_SIZE,
+        validation_data=(x_test, y_test),
+        callbacks=[early_stopping_callback]
+    )
+
+    __print_best_hyperparameter(tuner=tuner, hp_name=ImdbSentimentHyperModel.HP_EMBEDDING_SIZE_NAME)
+    __print_best_hyperparameter(tuner=tuner, hp_name=ImdbSentimentHyperModel.HP_RNN_UNITS_NAME)
+    __print_best_hyperparameter(tuner=tuner, hp_name=ImdbSentimentHyperModel.HP_LOSS_FUNCTION_NAME)
