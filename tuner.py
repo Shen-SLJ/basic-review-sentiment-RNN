@@ -24,7 +24,7 @@ if __name__ == '__main__':
     hypermodel = ImdbSentimentHyperModel()
     tuner = kt.GridSearch(
         hypermodel=hypermodel,
-        objective=kt.Objective(name='val_loss', direction='min'),
+        objective=kt.Objective(name='val_accuracy', direction='max'),
         project_name='data'
     )
 
