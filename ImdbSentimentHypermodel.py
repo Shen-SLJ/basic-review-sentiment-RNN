@@ -23,7 +23,7 @@ class ImdbSentimentHyperModel(kt.HyperModel):
         model.add(SimpleRNN(units=rnn_units, activation='tanh'))
         model.add(Dense(units=1, activation='sigmoid'))
 
-        model.compile(loss=loss_function, optimizer='adam')
+        model.compile(loss=loss_function, optimizer='adam', metrics=['accuracy'])
 
         return model
 
