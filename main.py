@@ -4,32 +4,35 @@ from keras.src.datasets import imdb
 from keras.src.layers import Embedding, SimpleRNN, Dense, InputLayer
 from keras.src.utils import pad_sequences
 
-if __name__ == '__main__':
-    max_len = 500
-    vocab_size = 10000
-    embedding_size = 128
-    batch_size = 32
-    epochs = 20
+MAX_SENT_SIZE = 500
+VOCAB_SIZE = 10000
+EMBEDDING_SIZE = 64
+RNN_UNITS = 16
+BATCH_SIZE = 32
+EPOCHS = 30
+OPTIMIZER = 'adam'
+LOSS_FUNCTION = 'binary_crossentropy'
 
-    (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=vocab_size)
-    x_train = pad_sequences(sequences=x_train, maxlen=max_len)
-    x_test = pad_sequences(sequences=x_test, maxlen=max_len)
+if __name__ == '__main__':
+    (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=VOCAB_SIZE)
+    x_train = pad_sequences(sequences=x_train, maxlen=MAX_SENT_SIZE)
+    x_test = pad_sequences(sequences=x_test, maxlen=MAX_SENT_SIZE)
 
     model = Sequential()
-    model.add(InputLayer(shape=(max_len,)))
-    model.add(Embedding(input_dim=vocab_size, output_dim=embedding_size))
-    model.add(SimpleRNN(units=embedding_size, activation='tanh'))
+    model.add(InputLayer(shape=(MAX_SENT_SIZE,)))
+    model.add(Embedding(input_dim=VOCAB_SIZE, output_dim=EMBEDDING_SIZE))
+    model.add(SimpleRNN(units=RNN_UNITS, activation='tanh'))
     model.add(Dense(units=1, activation='sigmoid'))
 
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss=LOSS_FUNCTION, optimizer=OPTIMIZER, metrics=['accuracy'])
 
     model.fit(
         x=x_train,
         y=y_train,
-        epochs=epochs,
-        batch_size=batch_size,
+        epochs=EPOCHS,
+        batch_size=BATCH_SIZE,
         validation_data=(x_test, y_test),
         callbacks=[early_stopping]
     )

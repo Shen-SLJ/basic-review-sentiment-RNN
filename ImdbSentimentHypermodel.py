@@ -5,7 +5,7 @@ from keras_tuner import HyperParameters
 
 
 class ImdbSentimentHyperModel(kt.HyperModel):
-    MAX_LEN = 500
+    MAX_SENT_SIZE = 500
     VOCAB_SIZE = 10000
 
     HP_EMBEDDING_SIZE_NAME = 'embedding_size'
@@ -18,7 +18,7 @@ class ImdbSentimentHyperModel(kt.HyperModel):
         rnn_units = ImdbSentimentHyperModel.__hp_rnn_units(hp)
         loss_function = ImdbSentimentHyperModel.__hp_loss_function(hp)
 
-        model.add(InputLayer(shape=(self.MAX_LEN,)))
+        model.add(InputLayer(shape=(self.MAX_SENT_SIZE,)))
         model.add(Embedding(input_dim=self.VOCAB_SIZE, output_dim=embedding_size))
         model.add(SimpleRNN(units=rnn_units, activation='tanh'))
         model.add(Dense(units=1, activation='sigmoid'))

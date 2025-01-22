@@ -18,8 +18,8 @@ def __print_best_hyperparameter(tuner: Tuner, hp_name: str) -> None:
 
 if __name__ == '__main__':
     (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=ImdbSentimentHyperModel.VOCAB_SIZE)
-    x_train = pad_sequences(sequences=x_train, maxlen=ImdbSentimentHyperModel.MAX_LEN)
-    x_test = pad_sequences(sequences=x_test, maxlen=ImdbSentimentHyperModel.MAX_LEN)
+    x_train = pad_sequences(sequences=x_train, maxlen=ImdbSentimentHyperModel.MAX_SENT_SIZE)
+    x_test = pad_sequences(sequences=x_test, maxlen=ImdbSentimentHyperModel.MAX_SENT_SIZE)
 
     hypermodel = ImdbSentimentHyperModel()
     tuner = kt.GridSearch(
