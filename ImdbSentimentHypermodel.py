@@ -29,18 +29,17 @@ class ImdbSentimentHyperModel(kt.HyperModel):
 
     @staticmethod
     def __hp_embedding_size(hp: HyperParameters) -> int:
-        return hp.Choice(name=ImdbSentimentHyperModel.HP_EMBEDDING_SIZE_NAME, values=[32, 64, 128, 256])
+        return hp.Choice(name=ImdbSentimentHyperModel.HP_EMBEDDING_SIZE_NAME, values=[16, 32, 64, 128, 256])
 
     @staticmethod
     def __hp_rnn_units(hp: HyperParameters) -> int:
-        return hp.Choice(name=ImdbSentimentHyperModel.HP_RNN_UNITS_NAME, values=[32, 64, 128, 256])
+        return hp.Choice(name=ImdbSentimentHyperModel.HP_RNN_UNITS_NAME, values=[16, 32, 64, 128, 256])
 
     @staticmethod
     def __hp_loss_function(hp: HyperParameters) -> str:
         return hp.Choice(
             name=ImdbSentimentHyperModel.HP_LOSS_FUNCTION_NAME,
             values=[
-                'binary_crossentropy',
-                'binary_focal_crossentropy'
+                'binary_crossentropy'
             ]
         )
