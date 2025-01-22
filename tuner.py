@@ -6,7 +6,7 @@ from keras_tuner import Tuner
 
 from ImdbSentimentHypermodel import ImdbSentimentHyperModel
 
-MAX_EPOCHS = 30
+MAX_EPOCHS = 10
 BATCH_SIZE = 32
 
 
@@ -28,7 +28,7 @@ if __name__ == '__main__':
         project_name='data'
     )
 
-    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=8, restore_best_weights=True)
+    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
     tuner.search(
         x=x_train,
