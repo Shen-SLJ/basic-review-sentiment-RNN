@@ -67,7 +67,7 @@ st.set_page_config(page_title="Simple Sentiment RNN")
 st.title("Simple Sentiment RNN")
 st.caption("Basic neural network trained to analyse whether a movie review is positive or negative.")
 
-review = st.text_input(label="Review", value="This is a sample amazing review")
+review = st.text_area(label="Review", value="This is a sample amazing review", height=340)
 
 # ======================================================================================================================
 # Predict
