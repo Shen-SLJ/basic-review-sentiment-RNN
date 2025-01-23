@@ -4,7 +4,7 @@ from keras.src.datasets import imdb
 from keras.src.utils import pad_sequences
 from keras_tuner import Tuner
 
-from ImdbSentimentHypermodel import ImdbSentimentHyperModel
+from tuning.ImdbSentimentHypermodel import ImdbSentimentHyperModel
 
 MAX_EPOCHS = 15
 BATCH_SIZE = 32
