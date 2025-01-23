@@ -1,6 +1,7 @@
 from typing import cast
 
 import streamlit as st
+import re
 from keras import Model
 
 from keras.src.datasets import imdb
@@ -26,10 +27,10 @@ reversed_word_index: dict = {v: k for k, v in imdb.get_word_index().items()}
 
 
 def __encode_sentence(words: list[str]) -> list[list[int]]:
-    sentence_encoded = []
+    sentence_encoded = [1]  # 1 indicates the start of a sequence
 
     for word in words:
-        if word in word_index and word_index[word] <= VOCAB_SIZE: # <= as word index starts off at 1
+        if word in word_index and word_index[word] <= VOCAB_SIZE:  # <= as word index starts off at 1
             sentence_encoded.append(word_index[word] + INDEX_FROM)
         else:
             sentence_encoded.append(OOV_CHAR)
@@ -37,8 +38,15 @@ def __encode_sentence(words: list[str]) -> list[list[int]]:
     return [sentence_encoded]
 
 
+def __remove_punctuation(string: str) -> str:
+    stripped_string = re.sub(pattern=r'[^\w\s]', repl='', string=string)
+
+    return stripped_string
+
+
 def __pre_process(sentence: str) -> list[list[int]]:
-    words = sentence.lower().split()
+    stripped_sentence = __remove_punctuation(sentence)
+    words = stripped_sentence.lower().split()
     sentence_encoded = __encode_sentence(words)
     sentence_encoded = pad_sequences(sentence_encoded, maxlen=MAX_SENT_SIZE)
 
