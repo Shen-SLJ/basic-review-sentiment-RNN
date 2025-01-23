@@ -28,7 +28,7 @@ if __name__ == '__main__':
         project_name='data'
     )
 
-    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=7, restore_best_weights=True)
 
     tuner.search(
         x=x_train,
